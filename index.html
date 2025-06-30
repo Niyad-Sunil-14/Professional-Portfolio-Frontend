@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Full-Stack Developer specializing in Python Django framework. Professional freelancing services for web development, API development, and custom applications." />
+    <meta name="keywords" content="Django Developer, Python Developer, Full-Stack Developer, Web Development, API Development, Freelancer" />
+    <meta name="author" content="John Doe" />
+    <title>Niyad - Web Developer | Full-Stack Specialist</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://johndoe-portfolio.com" />
+    <meta property="og:title" content="John Doe - Full-Stack Developer | Python Django Specialist" />
+    <meta property="og:description" content="Professional freelancing services for web development, API development, and custom Django applications." />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://johndoe-portfolio.com" />
+    <meta property="twitter:title" content="John Doe - Full-Stack Developer | Python Django Specialist" />
+    <meta property="twitter:description" content="Professional freelancing services for web development, API development, and custom Django applications." />
+    
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://images.pexels.com" />
+    
+    <style>
+      /* Loading spinner styles */
+      .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      }
+      
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #2563eb;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
