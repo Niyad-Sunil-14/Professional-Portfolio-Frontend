@@ -14,14 +14,11 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState<string | null>(null);
   const [csrfToken, setCsrfToken] = useState<string>('');
 
-  const isDevelopment = import.meta.env.MODE === 'development'
-  const myBaseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
-
   // Fetch CSRF token on component mount
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const response = await fetch('${myBaseUrl}/api/contact/csrf/', {
+        const response = await fetch('http://localhost:8000/api/contact/csrf/', {
           method: 'GET',
           credentials: 'include',
         });
@@ -47,7 +44,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('${myBaseUrl}/api/contact/messages/', {
+      const response = await fetch('http://localhost:8000/api/contact/messages/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
