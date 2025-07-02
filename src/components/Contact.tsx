@@ -21,7 +21,7 @@ const Contact = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const response = await fetch('${myBaseUrl}/api/contact/csrf/', {
+        const response = await fetch('${myBaseUrl}/csrf/', {
           method: 'GET',
           credentials: 'include',
         });
