@@ -47,7 +47,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('${myBaseUrl}', {
+      const response = await fetch('${myBaseUrl}/messages/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
