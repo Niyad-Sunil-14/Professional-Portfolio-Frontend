@@ -18,13 +18,19 @@ const Contact = () => {
   const myBaseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
 
   // Fetch CSRF token on component mount
-  useEffect(() => {
+    useEffect(() => {
     const fetchCsrfToken = async () => {
+      const url = `${myBaseUrl}/csrf/`;
+      console.log('Fetching CSRF token from:', url); // Add this
       try {
-        const response = await fetch('${myBaseUrl}/csrf/', {
+        const response = await fetch(url, {
           method: 'GET',
           credentials: 'include',
         });
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`CSRF fetch failed with status ${response.status}: ${errorText}`);
+        }
         const data = await response.json();
         setCsrfToken(data.csrfToken);
       } catch (error) {
