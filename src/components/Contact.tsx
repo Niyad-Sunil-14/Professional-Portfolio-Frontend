@@ -2,92 +2,84 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, Linkedin, Github, Instagram } from 'lucide-react';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone_number: '', // Added phone_number
-    subject: '',
-    message: '',
-    budget: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<string | null>(null);
-  const [csrfToken, setCsrfToken] = useState<string>('');
-
-  const isDevelopment = import.meta.env.MODE === 'development'
-  const myBaseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
-
-  // Fetch CSRF token on component mount
-    useEffect(() => {
-    const fetchCsrfToken = async () => {
-      const url = `${myBaseUrl}/csrf/`;
-      console.log('Fetching CSRF token from:', url); // Add this
-      try {
-        const response = await fetch(url, {
-          method: 'GET',
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`CSRF fetch failed with status ${response.status}: ${errorText}`);
-        }
-        const data = await response.json();
-        setCsrfToken(data.csrfToken);
-      } catch (error) {
-        console.error('Failed to fetch CSRF token:', error);
-      }
-    };
-    fetchCsrfToken();
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone_number: '',
+        subject: '',
+        message: '',
+        budget: ''
     });
-  };
+    const [csrfToken, setCsrfToken] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+    const myBaseUrl = import.meta.env.VITE_API_BASE_URL_DEPLOY || 'https://professional-portfolio-backend-jjpp.onrender.com/api/contact';
+    const url = `${myBaseUrl}/messages/`;
+    console.log('Environment variables:', import.meta.env);
+    console.log('Base URL:', myBaseUrl);
+    console.log('Form submission URL:', url);
 
-    try {
-      const response = await fetch('${myBaseUrl}/messages/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData),
-      });
+    useEffect(() => {
+        const fetchCsrfToken = async () => {
+            try {
+                const response = await fetch(`${myBaseUrl}/get-csrf-token/`, {
+                    credentials: 'include',
+                });
+                const data = await response.json();
+                console.log('CSRF token response:', data);
+                setCsrfToken(data.csrfToken);
+            } catch (error) {
+                console.error('Failed to fetch CSRF token:', error);
+            }
+        };
+        fetchCsrfToken();
+    }, []);
 
-      if (response.ok) {
-        setSubmitStatus('success');
-        setFormData({
-          name: '',
-          email: '',
-          phone_number: '', // Reset phone_number
-          subject: '',
-          message: '',
-          budget: ''
-        });
-        alert('Thank you for your message! I\'ll get back to you soon.');
-      } else {
-        const errorData = await response.json();
-        setSubmitStatus('error');
-        alert(`Failed to send message: ${JSON.stringify(errorData)}`);
-        console.error('Form submission error:', errorData);
-      }
-    } catch (error) {
-      setSubmitStatus('error');
-      alert('An error occurred. Please try again later.');
-      console.error('Network error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+
+        console.log('Submitting form to:', url);
+        console.log('Form data:', formData);
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
+            console.log('Response status:', response.status);
+            const responseData = await response.json();
+            console.log('Response data:', responseData);
+            if (response.ok) {
+                setSubmitStatus('success');
+                setFormData({
+                    name: '',
+                    email: '',
+                    phone_number: '',
+                    subject: '',
+                    message: '',
+                    budget: ''
+                });
+                alert('Thank you for your message! I\'ll get back to you soon.');
+            } else {
+                setSubmitStatus('error');
+                alert(`Failed to send message: ${JSON.stringify(responseData)}`);
+                console.error('Form submission error:', responseData);
+            }
+        } catch (error) {
+            setSubmitStatus('error');
+            alert('An error occurred. Please try again later.');
+            console.error('Network error:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
   return (
     <section id="contact" className="py-20 bg-gray-50">
