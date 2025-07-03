@@ -28,7 +28,7 @@ const Contact = () => {
   // Fetch CSRF token on component mount
   useEffect(() => {
     const fetchCsrfToken = async () => {
-      const csrfUrl = `${myBaseUrl}/get-csrf-token/`; // Updated to match backend endpoint
+      const csrfUrl = `${myBaseUrl}/csrf/`;
       console.log('Fetching CSRF token from:', csrfUrl);
       try {
         const response = await fetch(csrfUrl, {
@@ -63,8 +63,9 @@ const Contact = () => {
 
     console.log('Submitting form to:', url);
     console.log('Form data:', formData);
+    console.log('CSRF Token:', csrfToken);
     try {
-      const response = await fetch(url, { // Fixed: Use `url` instead of '${myBaseUrl}/messages/'
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
